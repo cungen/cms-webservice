@@ -3,7 +3,7 @@ const config = require('../config');
 
 
 app.use(function *() {
-    this.body = '6Hello World!'
+    this.body = 'Hello World!'
 });
 
 app.listen(config.server.port);
