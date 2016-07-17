@@ -20,10 +20,18 @@ var all = {
                 safe: true
             }
         }
+    },
+
+    session: {
+        secrets: 'cms-webservice-secret',
+        cookie:  {
+            domain: '.cg.top',
+            maxAge: 60000 * 5
+        }
     }
 };
 
-var config = all;
+var config;
 
 if (fs.existsSync('./' + all.env + '.js')) {
     config = _.merge(all, require('./' + all.env + '.js') || {});
@@ -35,4 +43,4 @@ if (fs.existsSync(privateConfigPath)) {
     config = _.merge(config, require(privateConfigPath) || {});
 }
 
-module.exports = config;
+module.exports = config || all;

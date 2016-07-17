@@ -3,10 +3,9 @@
 const
     router = require('koa-router')(),
     passport = require('koa-passport'),
-    config = require('../config'),
     mongoose = require('mongoose'),
-    User = mongoose.model('User'),
-    auth = require('./auth.service');
+    User = mongoose.model('User');
 
-// Passport Configuration
-require('./local/pass').setup(User, config);
+router.use('/local', require('./local').routes());
+
+module.exports = router;
