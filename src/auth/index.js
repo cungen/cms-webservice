@@ -1,11 +1,31 @@
 "use strict";
 
 const
-    router = require('koa-router')(),
     passport = require('koa-passport'),
-    mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    config = require('../config/env'),
+    User = require('../model/user.model');
 
-router.use('/local', require('./local').routes());
+module.exports = function() {
 
-module.exports = router;
+    // add test user
+    User.findOne({ username: 'test' }, function (err, testUser) {
+        if (!testUser) {
+            console.log('test user did not exist; creating test user...');
+            testUser = new User({
+                username: 'test',
+                password: 'test'
+            });
+            testUser.save()
+        }
+    });
+
+    passport.serializeUser(function(user, done) {
+        done(null, user._id);
+    });
+
+    passport.deserializeUser(function(id, done) {
+        User.findById(id, done);
+    });
+
+    require('./local')(passport, User, config);
+};

@@ -1,21 +1,13 @@
 "use strict";
 
-const
-    mongoose = require('mongoose'),
-    router = require('koa-router')(),
-    passport = require('koa-passport'),
-    User = mongoose.model('User');
+const LocalStrategy = require('passport-local').Strategy;
 
-router.post('/', function *(next) {
-    var ctx = this;
-    passport.authenticate('local', function *(err, user, info) {
-        if (err) ctx.throw(err);
-        if (info) {
-            ctx.status = 403;
-            return ctx.body = info;
-        }
-        ctx.body = 'aaa';
-    }).call(this, next);
-});
-
-module.exports = router;
+module.exports = function(passport, User, config) {
+    passport.use(new LocalStrategy(function(username, password, done) {
+        console.log('in strategy');
+        User.findOne({
+            username: username,
+            password: password
+        }, done);
+    }))
+};

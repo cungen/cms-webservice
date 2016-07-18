@@ -1,8 +1,18 @@
-const
-    LocalStrategy = require('passport-local').Strategy,
-    User = require('../model/user.model');
+const LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function(passport) {
+module.setup = function(passport, User, config) {
+
+    User.findOne({ username: 'test' }, function(err, testUser) {
+        if (!testUser) {
+            console.log('test user did not exist; creating test user ...');
+            testUser = new User({
+                username: 'test',
+                password: 'test'
+            });
+            testUser.save();
+        }
+    });
+
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });

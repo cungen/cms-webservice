@@ -12,7 +12,6 @@ const
     config = require('./config/env');
 
 mongoose.connect(config.mongo.uri, config.mongo.options);
-require('./config/passport')(passport);
 
 app.use(logger());
 app.use(bodyParser());
@@ -27,6 +26,9 @@ app.use(session({
     }),
     cookie: config.session.cookie
 }));
+
+require('./auth')();
+
 app.use(passport.initialize());
 app.use(passport.session());
 
