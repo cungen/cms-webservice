@@ -7,7 +7,7 @@ const
 
 var UserSchema = new Schema({
     username: String,
-    password: String,
+    hashedPassword: String,
     salt: String,
     avatar: String,
     created: {

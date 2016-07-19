@@ -12,6 +12,7 @@ router.post('/', function *(ctx, next) {
             ctx.status = 403;
             return ctx.body = info;
         }
+        ctx.body = user;
     }).call(this, next)
 });
 

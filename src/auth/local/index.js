@@ -10,10 +10,10 @@ module.exports = function(passport, User) {
         co(function *() {
             const user = yield User.findOne({ username: username });
             if (!user) {
-                return done(null, false, { error_msg: 'not user exist' });
+                return done(null, false, { error_msg: 'Invalid username or password.' });
             }
             if (!user.authenticate(password)) {
-                return done(null, false, { error_msg: 'password error' });
+                return done(null, false, { error_msg: 'Invalid username or password.' });
             }
             return done(null, user);
         }).catch(function(err) {
