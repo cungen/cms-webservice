@@ -2,20 +2,20 @@
 
 const
     passport = require('koa-passport'),
+    co = require('co'),
     config = require('../config/env'),
     User = require('../model/user.model');
 
 module.exports = function() {
 
     // add test user
-    User.findOne({ username: 'test' }, function (err, testUser) {
-        if (!testUser) {
-            console.log('test user did not exist; creating test user...');
-            testUser = new User({
-                username: 'test',
+    co(function *() {
+        const userCount = yield User.count();
+        if (userCount === 0) {
+            yield User.create({
+                username: 'cungen',
                 password: 'test'
             });
-            testUser.save()
         }
     });
 

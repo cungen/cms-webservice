@@ -20,6 +20,17 @@ var UserSchema = new Schema({
     }
 });
 
+UserSchema
+    .virtual('password')
+    .set(function(password) {
+        this._password = password;
+        this.salt = this.makeSalt();
+        this.hashedPassword = this.encryptPassword(password);
+    })
+    .get(function() {
+        return this._password;
+    });
+
 UserSchema.methods = {
     authenticate: function(plainText) {
         return this.encryptPassword(plainText) === this.hashedPassword;
@@ -33,5 +44,9 @@ UserSchema.methods = {
         return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
     }
 };
+
+UserSchema.set('toObject', {
+    virtuals: true
+});
 
 module.exports = mongoose.model('User', UserSchema);

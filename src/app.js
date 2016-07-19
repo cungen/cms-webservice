@@ -3,7 +3,6 @@
 const
     app = require('koa')(),
     bodyParser = require('koa-bodyparser'),
-    passport = require('koa-passport'),
     logger = require('koa-logger'),
     json = require('koa-json'),
     session = require('koa-generic-session'),
@@ -16,6 +15,7 @@ mongoose.connect(config.mongo.uri, config.mongo.options);
 app.use(logger());
 app.use(bodyParser());
 app.use(json());
+
 app.keys = [config.session.secrets];
 app.use(session({
     key: 'sid',
@@ -28,6 +28,8 @@ app.use(session({
 }));
 
 require('./auth')();
+
+const passport = require('koa-passport');
 
 app.use(passport.initialize());
 app.use(passport.session());
