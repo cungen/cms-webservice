@@ -2,11 +2,12 @@
 
 const
     app = require('koa')(),
+    passport = require('koa-passport'),
     bodyParser = require('koa-bodyparser'),
     logger = require('koa-logger'),
     json = require('koa-json'),
     session = require('koa-generic-session'),
-    MongooseStore = require('koa-mongodb-session'),
+    MongooseStore = require('koa-session-mongoose'),
     mongoose = require('mongoose'),
     config = require('./config/env');
 
@@ -27,9 +28,7 @@ app.use(session({
     cookie: config.session.cookie
 }));
 
-require('./auth')();
-
-const passport = require('koa-passport');
+require('./auth')(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());

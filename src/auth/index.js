@@ -1,12 +1,11 @@
 "use strict";
 
 const
-    passport = require('koa-passport'),
     co = require('co'),
     config = require('../config/env'),
     User = require('../model/user.model');
 
-module.exports = function() {
+module.exports = function(passport) {
 
     // add test user
     co(function *() {
