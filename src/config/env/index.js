@@ -26,7 +26,7 @@ var all = {
         secrets: 'cms-webservice-secret',
         cookie:  {
             secure: false,
-            domain: '.cg.top',
+            domain: 'localhost',
             maxAge: 60000 * 5
         }
     }

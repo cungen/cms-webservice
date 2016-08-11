@@ -20,6 +20,7 @@ app.use(json());
 app.keys = [config.session.secrets];
 app.use(session({
     key: 'sid',
+    secret: config.session.secrets,
     store: new MongooseStore({
         collection: 'session',
         connection: mongoose,
