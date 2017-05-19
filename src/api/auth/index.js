@@ -5,28 +5,28 @@ const
     passport = require('koa-passport');
 
 router.post('/local', login);
-router.get('/local', function *() {
-    if (this.passport.user) {
-        this.body = { user: this.passport.user };
+router.get('/local', async ctx => {
+    if (ctx.state.user) {
+        ctx.body = { user: ctx.state.user };
+        ctx.status = 200;
+    } else {
+        ctx.body = { user: null };
+        ctx.status = 401;
     }
-    this.status = 200;
 });
 
 router.get('/logout', logout);
 
-function *login(next) {
-    var _this = this;
-    yield* passport.authenticate("local", function*(err, user, info) {
-        if (err) {
-            throw err;
-        }
+async function login(ctx, next) {
+    return passport.authenticate('local', async function (err, user, info, status) {
         if (user === false) {
-            _this.status = 401;
+            ctx.body = { user: null, info: info };
+            ctx.status = 401;
         } else {
-            yield _this.login(user);
-            _this.body = { user: user };
+            ctx.body = { user: user };
+            return ctx.login(user);
         }
-    }).call(this);
+    })(ctx, next);
 }
 
 function logout(ctx) {

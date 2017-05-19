@@ -1,9 +1,8 @@
 const User = require('../model/user.model');
 
-function *isAuthenticated(next) {
-    console.log(this, this.passport.KoaPassport, this.user);
-    if(!this.state.user) this.throw('UnauthorizedError', 401);
-    yield next;
+async function isAuthenticated(ctx, next) {
+    if(!ctx.state.user) ctx.throw('UnauthorizedError', 401);
+    next();
 }
 
 exports.isAuthenticated = isAuthenticated;

@@ -4,12 +4,12 @@ const
 
 router.get('/me', auth.isAuthenticated, me);
 
-function *me() {
-    this.status = 200;
-    this.body = {
+async function me(ctx, next) {
+    ctx.body = {
         success: true,
-        data: this.req.user
-    }
+        data: ctx.state.user
+    };
+    ctx.status = 200;
 }
 
 module.exports = router;

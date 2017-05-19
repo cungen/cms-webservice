@@ -1,29 +1,32 @@
 "use strict";
 
 const
-    co = require('co'),
     config = require('../config/env'),
     User = require('../model/user.model');
 
 module.exports = function(passport) {
 
-    // add test user
-    co(function *() {
-        const userCount = yield User.count();
+    (async function () {
+        const userCount = await User.count();
         if (userCount === 0) {
-            yield User.create({
+            await User.create({
                 username: 'cungen',
                 password: 'test'
             });
         }
-    });
+    })();
 
     passport.serializeUser(function(user, done) {
         done(null, user._id);
     });
 
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, done);
+    passport.deserializeUser(async function(id, done) {
+        try {
+            const user = await User.findById(id, done);
+            done(null, user);
+        } catch (err) {
+            done(err);
+        }
     });
 
     require('./local')(passport, User, config);

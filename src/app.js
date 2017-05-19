@@ -1,11 +1,13 @@
 "use strict";
 
 const
-    app = require('koa')(),
+    Koa = require('koa'),
+    app = new Koa(),
     passport = require('koa-passport'),
     bodyParser = require('koa-bodyparser'),
     logger = require('koa-logger'),
     json = require('koa-json'),
+    // session = require('koa-session'),
     session = require('koa-generic-session'),
     MongooseStore = require('koa-session-mongoose'),
     mongoose = require('mongoose'),
@@ -24,7 +26,8 @@ app.use(session({
     store: new MongooseStore({
         collection: 'session',
         connection: mongoose,
-        expires: 60 * 60 * 24 * 14
+        // expires: 60 * 60 * 24 * 14
+        expires: 60 * 1
     }),
     cookie: config.session.cookie
 }));
