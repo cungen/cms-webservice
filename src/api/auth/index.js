@@ -7,10 +7,10 @@ const
 router.post('/local', login);
 router.get('/local', async ctx => {
     if (ctx.state.user) {
-        ctx.body = { user: ctx.state.user };
+        ctx.body = { value: { user: ctx.state.user } };
         ctx.status = 200;
     } else {
-        ctx.body = { user: null };
+        ctx.body = { value: null, error_no: 401, error_msg: 'unAuthorized' };
         ctx.status = 401;
     }
 });
@@ -20,10 +20,10 @@ router.get('/logout', logout);
 async function login(ctx, next) {
     return passport.authenticate('local', async function (err, user, info, status) {
         if (user === false) {
-            ctx.body = { user: null, info: info };
+            ctx.body = { value: null, error_no: 401, error_msg: info };
             ctx.status = 401;
         } else {
-            ctx.body = { user: user };
+            ctx.body = { value: { user: ctx.state.user } };
             return ctx.login(user);
         }
     })(ctx, next);

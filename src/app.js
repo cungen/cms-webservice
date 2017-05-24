@@ -7,12 +7,13 @@ const
     bodyParser = require('koa-bodyparser'),
     logger = require('koa-logger'),
     json = require('koa-json'),
-    // session = require('koa-session'),
+    convert = require('koa-convert'),
     session = require('koa-generic-session'),
     MongooseStore = require('koa-session-mongoose'),
     mongoose = require('mongoose'),
     config = require('./config/env');
 
+mongoose.Promise = global.Promise;
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 app.use(logger());
@@ -20,17 +21,16 @@ app.use(bodyParser());
 app.use(json());
 
 app.keys = [config.session.secrets];
-app.use(session({
+app.use(convert(session({
     key: 'sid',
     secret: config.session.secrets,
     store: new MongooseStore({
         collection: 'session',
         connection: mongoose,
-        // expires: 60 * 60 * 24 * 14
-        expires: 60 * 1
+        expires: 60 * 60 * 24
     }),
     cookie: config.session.cookie
-}));
+})));
 
 require('./auth')(passport);
 

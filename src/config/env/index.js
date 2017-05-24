@@ -27,7 +27,7 @@ var all = {
         cookie:  {
             secure: false,
             domain: 'localhost',
-            maxAge: 60000 * 5
+            maxAge: 10 * 1000
         }
     }
 };
