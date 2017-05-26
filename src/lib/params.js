@@ -6,6 +6,8 @@ module.exports = function () {
     let params = Array.prototype.slice.call(arguments, 0);
     if (params.length === 1 && (type(params[0]) === '[object Array]' || type(params[0]) === '[object Object]')) {
         params = params[0];
+    } else if (params.length === 1 && typeof params[0] === 'string') {
+        params = params[0].split(' ');
     } else {
         params = params[0];
     }
@@ -17,10 +19,12 @@ module.exports = function () {
         let target = null;
 
         if (params.query && params.query.length) {
-            origin = params.query;
+            origin = typeof params.query === 'string' ?
+                params.query.split(' ') : params.query;
             target = ctx.query;
         } else if (params.body && params.body.length) {
-            origin = params.body;
+            origin = typeof params.body === 'string' ?
+                params.body.split(' ') : params.body;
             target = ctx.request.body;
         }
 

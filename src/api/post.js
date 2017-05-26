@@ -16,7 +16,7 @@ router.get('/posts', async function (ctx, next) {
 
 router
     .get('/posts/:id', async function(ctx, next) {
-        const post = await Post.findOne({ _id: ctx.params.id });
+        const post = await Post.findById(ctx.params.id);
         if (!post) {
             ctx.throw(404, 'Post not found');
         } else {
@@ -28,7 +28,7 @@ router
  * Create post
  */
 router.post('/posts', auth.isAuthenticated, params({
-    body: ['title', 'content']
+    body: 'title content'
 }), async function (ctx, next) {
     const params = ctx.request.body;
     const content = xss(params.content);
@@ -39,7 +39,6 @@ router.post('/posts', auth.isAuthenticated, params({
         content: content
     });
     ctx.body = { value: 'success' };
-    await next()
 });
 
 /**
