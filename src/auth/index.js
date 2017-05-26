@@ -1,6 +1,7 @@
 "use strict";
 
 const
+    md5 = require('md5'),
     config = require('../config/env'),
     User = require('../model/user.model');
 
@@ -11,7 +12,7 @@ module.exports = function(passport) {
         if (userCount === 0) {
             await User.create({
                 username: 'cungen',
-                password: 'test'
+                password: md5('test')
             });
         }
     })();

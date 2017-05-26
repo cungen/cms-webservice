@@ -24,24 +24,25 @@ var all = {
 
     session: {
         secrets: 'cms-webservice-secret',
+        expires: 60 * 60 * 24 * 1000,
         cookie:  {
             secure: false,
             domain: 'localhost',
-            maxAge: 10 * 1000
+            maxAge: 60 * 60 * 24 * 1000
         }
     }
 };
 
-var config;
+let config = all;
 
 if (fs.existsSync('./' + all.env + '.js')) {
     config = _.merge(all, require('./' + all.env + '.js') || {});
 }
 
 // private config
-var privateConfigPath = path.join(__dirname, 'private/index.js');
+let privateConfigPath = path.join(__dirname, 'private/index.js');
 if (fs.existsSync(privateConfigPath)) {
     config = _.merge(config, require(privateConfigPath) || {});
 }
 
-module.exports = config || all;
+module.exports = config;

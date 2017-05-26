@@ -16,6 +16,9 @@ const
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
+// Error handler
+app.use(require('./lib/errorHandler')());
+
 app.use(logger());
 app.use(bodyParser());
 app.use(json());
@@ -27,7 +30,7 @@ app.use(convert(session({
     store: new MongooseStore({
         collection: 'session',
         connection: mongoose,
-        expires: 60 * 60 * 24
+        expires: config.session.expires
     }),
     cookie: config.session.cookie
 })));
