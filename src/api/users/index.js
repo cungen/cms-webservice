@@ -3,7 +3,7 @@ const
     router = require('koa-router')(),
     passport = require('koa-passport'),
     auth = require('../../auth/auth.service')
-    params = require('../../lib/params');
+   params = require('../../lib/params');
 
 router.get('/me', auth.isAuthenticated, me);
 router.post('/login', params({ body: ['username', 'password'] }), login);
@@ -29,6 +29,7 @@ async function login (ctx, next) {
 
 async function logout (ctx) {
     ctx.logout();
+    ctx.body = { value: 'success' };
 }
 
 module.exports = router;
