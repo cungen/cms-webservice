@@ -33,7 +33,7 @@ function addByType (type) {
         try {
             await Term.create({
                 name: params.name,
-                slug: params.slug || params.name,
+                slug: params.slug || params.name.toLowerCase().replace(/\s/g, '-'),
                 description: params.description,
                 taxonomy: type
             });
